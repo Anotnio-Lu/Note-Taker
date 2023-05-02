@@ -46,6 +46,7 @@ The Note Taker application is a simple yet powerful tool that allows users to ea
 ## Link
 
 The below is a link to the deployed application: 
+https://dry-gorge-48683.herokuapp.com/ 
 
 
 ## Authors
