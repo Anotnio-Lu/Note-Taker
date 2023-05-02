@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const uuid = require('./public/assets/helpers/uuid');
+const uuid = require('./Develop/public/assets/helpers/uuid');
 const util = require('util');
 
 const app = express();
@@ -10,17 +10,17 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+app.use(express.static('Develop'));
 
 
 // GET Route for note page
 app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, './notes.html'))
+  res.sendFile(path.join(__dirname, './Develop/notes.html'))
 );
 
 // GET Route for homepage
 app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, './index.html'))
+  res.sendFile(path.join(__dirname, './Develop/index.html'))
 );
 
 // Promise version of fs.readFile
@@ -30,7 +30,7 @@ const readFromFile = util.promisify(fs.readFile);
 app.get('/api/notes', (req, res) => {
   // Send a message to the client
 
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+  readFromFile('./Develop/db/db.json').then((data) => res.json(JSON.parse(data)));
   // Log our request to the terminal
   console.info(`${req.method} request received to get notes`);
 
@@ -39,7 +39,7 @@ app.get('/api/notes', (req, res) => {
 app.delete("/api/notes/:id", (req, res) => {
 
   const currentId = req.params.id
-  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+  fs.readFile('./Develop/db/db.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
@@ -51,7 +51,7 @@ app.delete("/api/notes/:id", (req, res) => {
       parsedReviews.splice(index, 1);
 
       fs.writeFile(
-        './db/db.json',
+        './Develop/db/db.json',
         JSON.stringify(parsedReviews, null, 4),
         (writeErr) =>
           writeErr
@@ -82,7 +82,7 @@ app.post('/api/notes', (req, res) => {
       id: uuid(),
     };
 
-    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+    fs.readFile('./Develop/db/db.json', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
       } else {
@@ -92,7 +92,7 @@ app.post('/api/notes', (req, res) => {
         parsedNotes.push(newNote);
         // Write updated reviews back to the file
         fs.writeFile(
-          './db/db.json',
+          './Develop/db/db.json',
           JSON.stringify(parsedNotes, null, 4),
           (writeErr) =>
             writeErr
